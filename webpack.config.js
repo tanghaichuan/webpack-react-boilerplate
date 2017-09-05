@@ -28,7 +28,7 @@ var config = {
     plugins: [
         new htmlWebpackPlugin({
             title: '搭建前端工作流', // 文件title
-            template: './src/main.html' // 路径
+            template: './src/index.html' // 路径
         })
     ]
 }
