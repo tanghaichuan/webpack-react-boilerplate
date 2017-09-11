@@ -28,6 +28,8 @@ module.exports = {
         ],
         "no-unused-vars": ["off"],
         "no-undef": ["off"],
-        "indent": ["off"]
+        "indent": ["off"],
+        "quotes": "off",
+        "linebreak-style": "off"
     }
 };

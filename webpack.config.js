@@ -1,17 +1,20 @@
 var path = require("path")
 var webpack = require("webpack")
 var htmlWebpackPlugin = require("html-webpack-plugin") // 加载模版页
-var CleanWebpackPlugin = require("clean-webpack-plugin"); // 清空发布目录
+var CleanWebpackPlugin = require("clean-webpack-plugin") // 清空发布目录
+var openBrowserPlugin = require("open-browser-webpack-plugin")
+var uglifyPlugin = webpack.optimize.UglifyJsPlugin
+var extractTextPlugin = require("extract-text-webpack-plugin")
 
 var entry = path.resolve(__dirname, "./src/index.js");
 
 var output = {
     path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js"
+    filename: "bundle.[hash:6].js"
 }
 
 var modules = {
-    loaders: [
+    rules: [
         {
             test: /\.js$/,
             exclude: /node_modules/,
@@ -22,7 +25,7 @@ var modules = {
             exclude: /node_modules/
         }, {
             test: /\.css$/,
-            loader: "style-loader!css-loader",
+            use: extractTextPlugin.extract(['css-loader']),
             include: path.resolve(__dirname, "src")
         }, {
             test: /\.less$/,
@@ -57,8 +60,15 @@ var plugins = [
         root: "", // An absolute path for the root  of webpack.config.js
         verbose: true, // Write logs to console.
         dry: false // Do not delete anything, good for testing.
-    })
+    }),
 
+    new openBrowserPlugin({url: 'http://localhost:8080'}),
+
+    new uglifyPlugin({compress: false}),
+
+    new webpack.BannerPlugin('author: tanghc'),
+
+    new extractTextPlugin("styles.css")
 ]
 
 var config = {
