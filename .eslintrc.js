@@ -30,6 +30,7 @@ module.exports = {
         "no-undef": ["off"],
         "indent": ["off"],
         "quotes": "off",
-        "linebreak-style": "off"
+        "linebreak-style": "off",
+        "no-console": "off"
     }
 };
