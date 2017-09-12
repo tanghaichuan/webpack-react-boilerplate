@@ -66,12 +66,14 @@ var modules = {
             exclude: /node_modules/
         }, {
             test: /\.css$/,
-            use: 'style-loader!css-loader',
-            include: resolve('src')
+            use: [
+                'style-loader', 'css-loader'
+            ],
+            include: resolve('../src')
         }, {
             test: /\.less$/,
             loader: "less-loader",
-            include: resolve('src')
+            include: resolve('../src')
         }, {
             test: /\.(png|jpe?g|gif|svg)$/,
             loader: 'url-loader',
@@ -110,7 +112,7 @@ var plugins = [
         template: "./src/index.html" // 路径
     }),
     new webpack.BannerPlugin('author: tanghc'),
-    new extractTextPlugin('[name].css'),
+    new extractTextPlugin('styles.css'),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
 ]
