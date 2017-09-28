@@ -5,6 +5,8 @@ var CleanWebpackPlugin = require("clean-webpack-plugin") // 清空发布目录
 
 var extractTextPlugin = require("extract-text-webpack-plugin")
 
+console.log("dev");
+
 /**
  * 公共资源路径
  */
@@ -111,8 +113,14 @@ var plugins = [
         title: "", // 文件title
         template: "./src/index.html" // 路径
     }),
+    // 代码压缩
+    new webpack
+        .optimize
+        .UglifyJsPlugin({sourceMap: false, compress: true}),
+    // 压缩文件加头部标识
     new webpack.BannerPlugin('author: tanghc'),
-    new extractTextPlugin('styles.css'),
+    // 提取css为单独文件
+    new extractTextPlugin('[name].css'),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
 ]

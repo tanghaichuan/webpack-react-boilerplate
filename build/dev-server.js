@@ -2,8 +2,13 @@ var webpack = require("webpack")
 var express = require("express")
 var path = require("path")
 var opn = require("opn")
-var config = require("./webpack.config.dev")
+var devConfig = require("./webpack.config.dev")
+var proConfig = require("./webpack.config.pro")
 var historyApiFallback = require("connect-history-api-fallback")
+
+var config = process.env.NODE_ENV === 'development'
+    ? devConfig
+    : proConfig
 
 var app = express()
 var compiler = webpack(config)
