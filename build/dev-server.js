@@ -1,10 +1,25 @@
 var webpack = require("webpack")
 var express = require("express")
+var colors = require('colors')
 var path = require("path")
 var opn = require("opn")
 var devConfig = require("./webpack.config.dev")
 var proConfig = require("./webpack.config.pro")
 var historyApiFallback = require("connect-history-api-fallback")
+
+// 控制台颜色
+colors.setTheme({
+    silly: 'rainbow',
+    input: 'grey',
+    verbose: 'cyan',
+    prompt: 'red',
+    info: 'green',
+    data: 'blue',
+    help: 'cyan',
+    warn: 'yellow',
+    debug: 'magenta',
+    error: 'red'
+});
 
 var config = process.env.NODE_ENV === 'development'
     ? devConfig
@@ -49,5 +64,5 @@ devMiddleware.waitUntilValid(() => {
 })
 
 app.listen(port, "localhost", function (err) {
-    err && console.log(err)
+    err && console.log(err.error)
 })

@@ -31,14 +31,14 @@ var commonPath = {
 /**
  * webpack配置项
  */
-var devtool = 'cheap-eval-source-map'
+var devtool = '#cheap-module-eval-source-map'
 
 var dev = {
     port: 8080
 }
 // 热更新
 var entry = {
-    app: ['webpack-hot-middleware/client?reload=true', resolve('../src/index.js')]
+    app: ['webpack-hot-middleware/client?reload=true', path.join(srcPath, "index.js")]
 }
 
 var output = {
@@ -63,15 +63,11 @@ var modules = {
             exclude: /node_modules/,
             use: ["babel-loader", "eslint-loader"]
         }, {
-            test: /\.js$/,
-            loader: "babel-loader",
-            exclude: /node_modules/
-        }, {
             test: /\.css$/,
-            use: [
-                'style-loader', 'css-loader'
-            ],
-            include: resolve('../src')
+            loader: extractTextPlugin.extract({
+                fallback: 'style-loader',
+                use:'css-loader'
+              })
         }, {
             test: /\.less$/,
             loader: "less-loader",
@@ -120,9 +116,10 @@ var plugins = [
     // 压缩文件加头部标识
     new webpack.BannerPlugin('author: tanghc'),
     // 提取css为单独文件
-    new extractTextPlugin('[name].css'),
+    new extractTextPlugin('css/[name].[contenthash].css'),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.HotModuleReplacementPlugin()
 ]
 
 var config = {
