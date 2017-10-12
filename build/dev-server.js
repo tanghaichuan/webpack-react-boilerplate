@@ -1,4 +1,6 @@
-var webpack = require("webpack")
+//var webpack = require("webpack")
+import webpack from 'webpack'
+import chalk from 'chalk'
 var express = require("express")
 var colors = require('colors')
 var path = require("path")
@@ -6,20 +8,6 @@ var opn = require("opn")
 var devConfig = require("./webpack.config.dev")
 var proConfig = require("./webpack.config.pro")
 var historyApiFallback = require("connect-history-api-fallback")
-
-// 控制台颜色
-colors.setTheme({
-    silly: 'rainbow',
-    input: 'grey',
-    verbose: 'cyan',
-    prompt: 'red',
-    info: 'green',
-    data: 'blue',
-    help: 'cyan',
-    warn: 'yellow',
-    debug: 'magenta',
-    error: 'red'
-});
 
 var config = process.env.NODE_ENV === 'development'
     ? devConfig
@@ -57,12 +45,12 @@ app.use(historyApiFallback());
 app.use(devMiddleware)
 app.use(hotMiddleware)
 
-console.log('> Starting dev server...');
+console.log(chalk.green('> Starting dev server...'))
 devMiddleware.waitUntilValid(() => {
-    console.log('> Listening at ' + uri + '\n')
+    console.log(chalk.green('> Listening at ' + uri + '\n'))
     opn(uri)
 })
 
 app.listen(port, "localhost", function (err) {
-    err && console.log(err.error)
+    err && console.log(chalk.red(err))
 })
