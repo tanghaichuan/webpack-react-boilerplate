@@ -1,10 +1,9 @@
-import path from 'path'
-import webpack from 'webpack'
-import htmlWebpackPlugin from 'html-webpack-plugin'
-import CleanWebpackPlugin from 'clean-webpack-plugin'
-import extractTextPlugin from 'extract-text-webpack-plugin'
-
-console.log("dev");
+var path = require('path')
+var webpack = require('webpack')
+var htmlWebpackPlugin = require('html-webpack-plugin')
+var cleanWebpackPlugin = require('clean-webpack-plugin')
+var extractTextPlugin = require('extract-text-webpack-plugin')
+//console.log("dev");
 
 /**
  * 公共资源路径
@@ -30,26 +29,26 @@ var commonPath = {
 /**
  * webpack配置项
  */
-const devtool = '#cheap-source-map'
+var devtool = '#cheap-source-map'
 
-const dev = {
+var dev = {
     port: 8080
 }
 // 热更新
-const entry = {
+var entry = {
     app: [
-        'babel-polyfill', 'react-hot-loader/patch', path.join(srcPath, "index.js")
+        'react-hot-loader/patch', 'webpack-hot-middleware/client', path.join(srcPath, "index.js")
     ],
     vendor: ['lodash']
 }
 
-const output = {
+var output = {
     path: resolve('dist'),
-    filename: "[name].[hash:8].js",
+    filename: "[name].js",
     publicPath: '/' // 同级目录
 }
 
-const resolves = {
+var resolves = {
     extensions: [
         '.js', '.jsx', '.json'
     ],
@@ -58,7 +57,7 @@ const resolves = {
     }
 }
 
-const modules = {
+var modules = {
     rules: [
         {
             test: /\.js$/,
@@ -97,7 +96,7 @@ const modules = {
     ]
 }
 
-const devServer = {
+var devServer = {
     historyApiFallback: true,
     hot: true,
     contentBase: "dist",
@@ -108,7 +107,7 @@ const devServer = {
     }
 }
 
-const plugins = [
+var plugins = [
     new htmlWebpackPlugin({title: "", template: "./src/index.html"}),
 
     new extractTextPlugin('css/[name].[hash].css'),
@@ -122,12 +121,14 @@ const plugins = [
     new webpack.HotModuleReplacementPlugin()
 ]
 
-export default {
-    devtool : devtool,
-    entry : entry,
-    output : output,
-    module : modules,
-    resolve : resolves,
-    devServer : devServer,
-    plugins : plugins
+var config = {
+    devtool: devtool,
+    entry: entry,
+    output: output,
+    module: modules,
+    resolve: resolves,
+    devServer: devServer,
+    plugins: plugins
 }
+
+module.exports = config

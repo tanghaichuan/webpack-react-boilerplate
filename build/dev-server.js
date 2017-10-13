@@ -1,21 +1,22 @@
-import webpack from 'webpack'
-import path from 'path'
-import chalk from 'chalk'
-import express from 'express'
-import colors from 'colors'
-import opn from 'opn'
-import historyApiFallback from 'connect-history-api-fallback'
-import WebpackDevServer from 'webpack-dev-server'
-import devConfig from './webpack.config.dev'
-import proConfig from './webpack.config.pro'
+var webpack = require('webpack')
+var path = require('path')
+var chalk = require('chalk')
+var express = require('express')
+var opn = require('opn')
+var historyApiFallback = require('connect-history-api-fallback')
+var WebpackDevServer = require('webpack-dev-server')
+var devConfig = require('./webpack.config.dev')
+var proConfig = require('./webpack.config.pro')
 
-let config = process.env.NODE_ENV === 'development'
+var config = process.env.NODE_ENV === 'development'
     ? devConfig
     : proConfig
 
-const app = express()
-const compiler = webpack(config)
+var app = express()
+var compiler = webpack(config)
 
+var port = 8080
+var uri = 'http://localhost:' + port
 /**
  * 公共资源路径
  */
@@ -25,27 +26,23 @@ var publicPath = path.join(rootPath, 'dist') // build 后输出目录
 var indexHtml = path.join(srcPath, 'index.html') // 入口模板页面
 var staticDir = path.join(rootPath, 'static') // 静态资源目录
 
-const server = new WebpackDevServer(compiler, {
+app.use(require("webpack-dev-middleware")(compiler, {
+    noInfo: false,
+    publicPath: config.output.publicPath,
     stats: {
         colors: true
     }
-});
-
-var port = 8080
-var uri = 'http://localhost:' + port
+}));
+app.use(require("webpack-hot-middleware")(compiler));
 
 // 静态资源目录
-server.use(staticDir, express.static('./static'))
+app.use(staticDir, express.static('./static'))
 
 // 兼容h5 history api
-server.use(historyApiFallback());
+app.use(historyApiFallback());
 
 console.log(chalk.green('> Starting dev server...'))
 
-server.listen(port, "localhost", (err) => {
-    if(err) {
-        console.log(chalk.red(err))
-    } else{
-        opn(uri)
-    }
+app.listen(port, "localhost", function () {
+    opn(uri)
 })
