@@ -1,9 +1,8 @@
-var path = require("path")
-var webpack = require("webpack")
-var htmlWebpackPlugin = require("html-webpack-plugin") // 加载模版页
-var CleanWebpackPlugin = require("clean-webpack-plugin") // 清空发布目录
-
-var extractTextPlugin = require("extract-text-webpack-plugin")
+import path from 'path'
+import webpack from 'webpack'
+import htmlWebpackPlugin from 'html-webpack-plugin'
+import CleanWebpackPlugin from 'clean-webpack-plugin'
+import extractTextPlugin from 'extract-text-webpack-plugin'
 
 console.log("dev");
 
@@ -31,23 +30,26 @@ var commonPath = {
 /**
  * webpack配置项
  */
-var devtool = '#cheap-module-eval-source-map'
+const devtool = '#cheap-source-map'
 
-var dev = {
+const dev = {
     port: 8080
 }
 // 热更新
-var entry = {
-    app: ['webpack-hot-middleware/client?reload=true', path.join(srcPath, "index.js")]
+const entry = {
+    app: [
+        'babel-polyfill', 'react-hot-loader/patch', path.join(srcPath, "index.js")
+    ],
+    vendor: ['lodash']
 }
 
-var output = {
+const output = {
     path: resolve('dist'),
-    filename: "bundle.[hash:6].js",
+    filename: "[name].[hash:8].js",
     publicPath: '/' // 同级目录
 }
 
-var resolves = {
+const resolves = {
     extensions: [
         '.js', '.jsx', '.json'
     ],
@@ -56,7 +58,7 @@ var resolves = {
     }
 }
 
-var modules = {
+const modules = {
     rules: [
         {
             test: /\.js$/,
@@ -64,24 +66,29 @@ var modules = {
             use: ["babel-loader", "eslint-loader"]
         }, {
             test: /\.css$/,
-            loader: extractTextPlugin.extract({
-                fallback: 'style-loader',
-                use:'css-loader'
-              })
+            loader: extractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})
         }, {
             test: /\.less$/,
             loader: "less-loader",
             include: resolve('../src')
         }, {
-            test: /\.(png|jpe?g|gif|svg)$/,
+            test: /\.(png|jpe?g|gif)$/,
+            exclude: /node_modules/,
             loader: 'url-loader',
             query: {
-                limit: 10240, // 10KB 以下使用 base64
+                limit: 10240,
                 name: 'img/[name]-[hash:6].[ext]'
             }
         }, {
+            test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+            loader: 'url-loader',
+            options: {
+                limit: 10000,
+                name: 'fonts/[name].[hash:7].[ext]'
+            }
+        }, {
             test: /\.jsx$/,
-            exclude: /^node_modules$/,
+            exclude: /node_modules/,
             loaders: [
                 'jsx', 'babel-loader'
             ],
@@ -90,7 +97,7 @@ var modules = {
     ]
 }
 
-var devServer = {
+const devServer = {
     historyApiFallback: true,
     hot: true,
     contentBase: "dist",
@@ -101,35 +108,26 @@ var devServer = {
     }
 }
 
-var plugins = [
-    /**
-     * 加载首页模版
-     */
-    new htmlWebpackPlugin({
-        title: "", // 文件title
-        template: "./src/index.html" // 路径
-    }),
-    // 代码压缩
+const plugins = [
+    new htmlWebpackPlugin({title: "", template: "./src/index.html"}),
+
+    new extractTextPlugin('css/[name].[hash].css'),
+
     new webpack
         .optimize
-        .UglifyJsPlugin({sourceMap: false, compress: true}),
-    // 压缩文件加头部标识
-    new webpack.BannerPlugin('author: tanghc'),
-    // 提取css为单独文件
-    new extractTextPlugin('css/[name].[contenthash].css'),
-    new webpack.HotModuleReplacementPlugin(),
+        .CommonsChunkPlugin({name: 'vendor'}),
+
     new webpack.NoEmitOnErrorsPlugin(),
+
     new webpack.HotModuleReplacementPlugin()
 ]
 
-var config = {
-    devtool: devtool,
-    entry: entry,
-    output: output,
-    module: modules,
-    resolve: resolves,
-    devServer: devServer,
-    plugins: plugins
+export default {
+    devtool : devtool,
+    entry : entry,
+    output : output,
+    module : modules,
+    resolve : resolves,
+    devServer : devServer,
+    plugins : plugins
 }
-
-module.exports = config;
