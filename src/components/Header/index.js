@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import './index.css'
 
-console.log('21');
+console.log('0');
 
 export default class Header extends Component {
     render() {

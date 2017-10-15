@@ -65,7 +65,9 @@ var modules = {
             use: ["babel-loader", "eslint-loader"]
         }, {
             test: /\.css$/,
-            loader: extractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})
+            // loader: extractTextPlugin.extract({fallback: 'style-loader', use:
+            // 'css-loader'})
+            use: ["style-loader", "css-loader"]
         }, {
             test: /\.less$/,
             loader: "less-loader",
@@ -96,21 +98,10 @@ var modules = {
     ]
 }
 
-var devServer = {
-    historyApiFallback: true,
-    hot: true,
-    contentBase: "dist",
-    inline: true,
-    port: 8080,
-    stats: {
-        colors: true
-    }
-}
-
 var plugins = [
     new htmlWebpackPlugin({title: "", template: "./src/index.html"}),
 
-    new extractTextPlugin('css/[name].[hash].css'),
+    // new extractTextPlugin('css/[name].[hash].css'),
 
     new webpack
         .optimize
@@ -127,7 +118,6 @@ var config = {
     output: output,
     module: modules,
     resolve: resolves,
-    devServer: devServer,
     plugins: plugins
 }
 
