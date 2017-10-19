@@ -20,9 +20,21 @@ var entry = {
     app: [
         'react-hot-loader/patch', 'webpack-hot-middleware/client', path.join(common.srcPath, "index.js")
     ],
-    vendor: ['lodash']
+    vendor: [
+        'lodash',
+        'react',
+        'react-dom'
+    ]
 }
-// var entry:()=>
+
+var resolves = {
+    extensions: [
+        '.js', '.jsx', '.json'
+    ],
+    alias: {
+        '@': common.srcPath
+    }
+}
 
 var modules = {
     rules: [
@@ -60,8 +72,8 @@ var config = merge(base, {
     devtool: devtool,
     entry: entry,
     plugins: plugins,
-    module: modules
-
+    module: modules,
+    resolve: resolves
 })
 
 module.exports = config

@@ -8,21 +8,12 @@ var output = {
     filename: "js/[name].[hash].js"
 }
 
-var resolves = {
-    extensions: [
-        '.js', '.jsx', '.json'
-    ],
-    alias: {
-        '@': common.resolve('src')
-    }
-}
-
 var modules = {
     rules: [
         {
             test: /\.js$/,
             exclude: /node_modules/,
-            use: ["babel-loader"]
+            loader: "babel-loader"
         }, {
             test: /\.less$/,
             loader: "less-loader",
@@ -45,16 +36,15 @@ var modules = {
         }, {
             test: /\.jsx$/,
             exclude: /node_modules/,
-            loaders: [
-                'jsx', 'babel-loader'
-            ],
-            include: common.resolve('src')
+            loader: 'babel-loader',
+            query: {
+                presets: ['react', 'es2015']
+            }
         }
     ]
 }
 
 module.exports = {
     output: output,
-    resolve: resolves,
     module: modules
 }

@@ -8,6 +8,7 @@ var srcPath = path.join(rootPath, 'src') // 开发目录
 var publicPath = path.join(rootPath, 'dist') // build 后输出目录
 var indexHtml = path.join(srcPath, 'index.html') // 入口模板页面
 var staticDir = path.join(rootPath, 'static') // 静态资源目录
+var nodeModulesPath = path.join(rootPath, 'node_modules')
 
 function resolve(dir) {
     return path.resolve(__dirname, dir)
@@ -19,5 +20,6 @@ module.exports = {
     srcPath,
     publicPath,
     indexHtml,
-    staticDir
+    staticDir,
+    nodeModulesPath
 }
