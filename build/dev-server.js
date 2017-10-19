@@ -6,11 +6,8 @@ var opn = require('opn')
 var historyApiFallback = require('connect-history-api-fallback')
 var WebpackDevServer = require('webpack-dev-server')
 var devConfig = require('./webpack.config.dev')
-var proConfig = require('./webpack.config.pro')
 
-var config = process.env.NODE_ENV === 'development'
-    ? devConfig
-    : proConfig
+var config = devConfig
 
 var app = express()
 var compiler = webpack(config)

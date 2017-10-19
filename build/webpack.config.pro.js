@@ -1,15 +1,56 @@
+var path = require('path')
 var webpack = require('webpack')
+var merge = require('webpack-merge')
+var htmlWebpackPlugin = require('html-webpack-plugin')
+var cleanWebpackPlugin = require('clean-webpack-plugin')
+var extractTextPlugin = require('extract-text-webpack-plugin')
+var base = require('./webpack.config.base')
+var common = require('./common')
+
+/**
+ * webpack配置项
+ */
+
+// 热更新
+var entry = {
+    app: [path.join(common.srcPath, "index.js")],
+    vendor: ['lodash']
+}
+
+var modules = {
+    rules: [
+        {
+            test: /\.css$/,
+            loader: extractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})
+        }
+    ]
+}
+
 var plugins = [
     new webpack.DefinePlugin({
         'process.env': {
             'NODE_ENV': JSON.stringify('production')
         }
     }),
+    new extractTextPlugin('css/[name].[hash].css'),
+    new htmlWebpackPlugin({title: "", template: "./src/index.html"}),
     new webpack
         .optimize
-        .UglifyJsPlugin({sourceMap: false, compress: true}),
-    // 提取公共代码到公共文件，在每次修改后的的构建结果中，将webpack的样板(boilerplate)和 manifest提取出来
-    // 常用的第三方库，如lodash等提取到单独的vendor chunk中
-
-    new webpack.BannerPlugin('author: tanghc')
+        .CommonsChunkPlugin({name: 'vendor'}),
+    new webpack
+        .optimize
+        .UglifyJsPlugin({
+            compress: {
+                warnings: false
+            },
+            sourceMap: true
+        })
 ]
+
+var config = merge(base, {
+    entry: entry,
+    module: modules,
+    plugins: plugins
+})
+
+module.exports = config
