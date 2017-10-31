@@ -1,9 +1,7 @@
 import React, {Component} from 'react'
 import './index.css'
 
-console.log('0');
-
-export default class Header extends Component {
+export default class extends Component {
     render() {
         return (
             <div>
