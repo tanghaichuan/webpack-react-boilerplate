@@ -15,10 +15,6 @@ var modules = {
             exclude: /node_modules/,
             loader: "babel-loader"
         }, {
-            test: /\.less$/,
-            loader: "less-loader",
-            include: common.resolve('../src')
-        }, {
             test: /\.(png|jpe?g|gif)$/,
             exclude: /node_modules/,
             loader: 'url-loader',

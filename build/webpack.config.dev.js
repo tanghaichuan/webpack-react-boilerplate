@@ -13,67 +13,64 @@ var common = require('./common')
 var devtool = '#cheap-source-map'
 
 var dev = {
-    port: 8080
+  port: 8080
 }
 // 热更新
 var entry = {
-    app: [
-        'react-hot-loader/patch', 'webpack-hot-middleware/client', path.join(common.srcPath, "index.js")
-    ],
-    vendor: [
-        'lodash',
-        'react',
-        'react-dom'
-    ]
+  app: [
+    'react-hot-loader/patch', 'webpack-hot-middleware/client', path.join(common.srcPath, "index.js")
+  ],
+  vendor: ['lodash', 'react', 'react-dom']
 }
 
 var resolves = {
-    extensions: [
-        '.js', '.jsx', '.json'
-    ],
-    alias: {
-        '@': common.srcPath
-    }
+  extensions: [
+    '.js', '.jsx', '.json'
+  ],
+  alias: {
+    '@': common.srcPath
+  }
 }
 
 var modules = {
-    rules: [
-        {
-            test: /\.css$/,
-            use: [
-                "style-loader",
-                "css-loader", {
-                    loader: 'postcss-loader',
-                    options: {
-                        ident: 'postcss',
-                        plugins: [autoPrefixer()]
-                    }
-                }
-            ]
+  rules: [
+    {
+      test: /\.(less|css)$/,
+      use: [
+        "style-loader",
+        "css-loader",
+        "less-loader", {
+          loader: 'postcss-loader',
+          options: {
+            ident: 'postcss',
+            plugins: [autoPrefixer()]
+          }
         }
-    ]
+      ]
+    }
+  ]
 }
 
 var plugins = [
-    new htmlWebpackPlugin({title: "", template: "./src/index.html"}),
-    new webpack
-        .optimize
-        .CommonsChunkPlugin({name: 'vendor'}),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new cleanWebpackPlugin(['dist'], {
-        root: common.rootPath,
-        verbose: true,
-        dry: false
-    }),
-    new webpack.HotModuleReplacementPlugin()
+  new htmlWebpackPlugin({title: "", template: "./src/index.html"}),
+  new webpack
+    .optimize
+    .CommonsChunkPlugin({name: 'vendor'}),
+  new webpack.NoEmitOnErrorsPlugin(),
+  new cleanWebpackPlugin(['dist'], {
+    root: common.rootPath,
+    verbose: true,
+    dry: false
+  }),
+  new webpack.HotModuleReplacementPlugin()
 ]
 
 var config = merge(base, {
-    devtool: devtool,
-    entry: entry,
-    plugins: plugins,
-    module: modules,
-    resolve: resolves
+  devtool: devtool,
+  entry: entry,
+  plugins: plugins,
+  module: modules,
+  resolve: resolves
 })
 
 module.exports = config

@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import List from './list'
 
 export default class extends Component {
   static defaultProps = {
@@ -19,9 +20,13 @@ export default class extends Component {
   }
   render() {
     return (
-      <button onClick={() => this.handleClickTitle()}>{this.state.isLiked
-          ? this.props.likedText
-          : this.props.unlikedText}👍</button>
+      <div>
+        <List/>
+        <button onClick={() => this.handleClickTitle()}>
+          {this.state.isLiked
+            ? this.props.likedText
+            : this.props.unlikedText}👍</button>
+      </div>
     )
   }
 }
