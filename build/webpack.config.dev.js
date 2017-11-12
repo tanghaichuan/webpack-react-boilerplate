@@ -38,14 +38,15 @@ var modules = {
       test: /\.(less|css)$/,
       use: [
         "style-loader",
-        "css-loader",
-        "less-loader", {
+        "css-loader", {
           loader: 'postcss-loader',
           options: {
             ident: 'postcss',
+            sourceMap: 'inline',
             plugins: [autoPrefixer()]
           }
-        }
+        },
+        "less-loader"
       ]
     }
   ]

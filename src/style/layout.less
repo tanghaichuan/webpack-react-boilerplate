@@ -1,0 +1,13 @@
+.row {
+  display: flex;
+}
+
+.loop( @count )when( @count > 0 ){
+  .col-@{count}{
+    flex: 0 0 100% / 12 * @count;
+    max-width: 100% / 12 * @count;
+  }
+  .loop((@count - 1));
+}
+
+.loop(12);
