@@ -5,7 +5,7 @@ import Footer from '@/components/Footer/index'
 import Main from '@/components/Main'
 import Comment from "@/containers/comment";
 
-export default class App extends Component {
+export default class extends Component {
   render() {
     return (
       <div>
