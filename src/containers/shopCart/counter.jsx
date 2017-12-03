@@ -1,10 +1,17 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import './index.less'
 
 export default class extends Component {
+
+  static propTypes = {
+    caption: PropTypes.string
+  }
+
   static defaultProps = {
     initValue: 0
   }
+  
   constructor(props) {
     super(props)
     this.state = {

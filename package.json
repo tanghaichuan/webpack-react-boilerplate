@@ -61,6 +61,8 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
+    "prop-types": "^15.6.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1"
   },
